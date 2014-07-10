@@ -9,6 +9,6 @@ public interface DepartmentService {
 	Collection<Department> getAllDepartments();
 	Department getDepartment(Short departmentId);
 	boolean isRegisteredDepartment(Short departmentId);
-	void updateDepartment(Department department);
+	void updateDepartment(Short departmentId, Department department);
 	void deleteDepartment(Short departmentId);
 }
