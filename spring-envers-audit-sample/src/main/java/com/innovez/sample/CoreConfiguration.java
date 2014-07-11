@@ -45,6 +45,7 @@ public class CoreConfiguration {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(dataSource());
+		entityManagerFactoryBean.setPersistenceUnitName("innovezPersistenceUnit");
 		entityManagerFactoryBean.setPackagesToScan("com.innovez.sample.domain.entity");
 		
 		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
