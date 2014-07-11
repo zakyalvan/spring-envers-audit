@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.innovez.sample.domain.entity.Project;
+import com.innovez.sample.domain.entity.Project.Status;
 import com.innovez.sample.domain.repository.ProjectRepository;
 
 @Service
@@ -20,6 +21,12 @@ public class JpaRepoBackedProjectService implements ProjectService {
 	@Override
 	public Collection<Project> getAllProjects() {
 		return projectRepository.findAll();
+	}
+
+	@Override
+	public Collection<Project> getAllProjectsWithStatus(Status status) {
+		Assert.notNull(status);
+		return projectRepository.findAllByStatus(status);
 	}
 
 	@Override
@@ -42,6 +49,14 @@ public class JpaRepoBackedProjectService implements ProjectService {
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
+	public void startProject(Integer projectId) {
+		Assert.notNull(projectId);
+		Assert.isTrue(isRegisteredProject(projectId));
+		
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public void updateProject(Integer projectId, Project project) {
 		projectRepository.save(project);
 	}
@@ -52,5 +67,5 @@ public class JpaRepoBackedProjectService implements ProjectService {
 		Assert.notNull(projectId);
 		Assert.isTrue(isRegisteredProject(projectId));
 		projectRepository.delete(projectId);
-	}	
+	}
 }

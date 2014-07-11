@@ -1,13 +1,20 @@
 package com.innovez.sample.domain.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.Assert;
@@ -28,6 +35,23 @@ public class Project implements Serializable {
 	@Column(name = "description")
 	private String description;
 
+	@NotNull
+	@Embedded
+	private Money budget;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name="status")
+	private Status status = Status.INITIATED;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="start_date")
+	private Date startDate;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="end_date")
+	private Date endDate;
+	
 	public Project() {}
 	public Project(String name, String description) {
 		Assert.notNull(name);
@@ -56,5 +80,37 @@ public class Project implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Money getBudget() {
+		return budget;
+	}
+	public void setBudget(Money budget) {
+		this.budget = budget;
+	}
+	
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public static enum Status {
+		INITIATED, STARTED, AMENDED, CLOSED
 	}
 }

@@ -30,12 +30,12 @@ import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.data.repository.history.support.RevisionEntityInformation;
 import org.springframework.util.Assert;
 
-public class SimpleRevisionAwareJpaRepository<T, ID extends Serializable, N extends Number & Comparable<N>> extends SimpleJpaRepository<T, ID> implements RevisionRepository<T, ID, N> {
+public class DefaultRevisionAwareJpaRepository<T, ID extends Serializable, N extends Number & Comparable<N>> extends SimpleJpaRepository<T, ID> implements RevisionRepository<T, ID, N> {
 	private final EntityInformation<T, ?> entityInformation;
 	private final RevisionEntityInformation revisionEntityInformation;
 	private final EntityManager entityManager;
 
-	public SimpleRevisionAwareJpaRepository(JpaEntityInformation<T, ?> entityInformation, RevisionEntityInformation revisionEntityInformation, EntityManager entityManager) {
+	public DefaultRevisionAwareJpaRepository(JpaEntityInformation<T, ?> entityInformation, RevisionEntityInformation revisionEntityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
 
 		Assert.notNull(revisionEntityInformation);

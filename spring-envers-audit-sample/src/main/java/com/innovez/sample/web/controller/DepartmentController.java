@@ -34,12 +34,12 @@ public class DepartmentController {
 		if(bindingResult.hasErrors()) {
 			return new ResponseEntity<Department>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Department>(HttpStatus.CREATED);
+		return new ResponseEntity<Department>(departmentService.createDepartment(department), HttpStatus.CREATED);
 	}
 	@RequestMapping(value={"", "/"}, method=RequestMethod.GET)
 	public HttpEntity<Collection<Department>> list() {
 		logger.debug("List all registered departments");
-		return new ResponseEntity<Collection<Department>>(HttpStatus.OK);
+		return new ResponseEntity<Collection<Department>>(departmentService.getAllDepartments(), HttpStatus.OK);
 	}
 	@RequestMapping(value="/{departmentId}", method=RequestMethod.GET)
 	public HttpEntity<Department> details(@PathVariable Short departmentId) {
@@ -47,7 +47,7 @@ public class DepartmentController {
 		if(!departmentService.isRegisteredDepartment(departmentId)) {
 			return new ResponseEntity<Department>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Department>(HttpStatus.OK);
+		return new ResponseEntity<Department>(departmentService.getDepartment(departmentId), HttpStatus.OK);
 	}
 	@RequestMapping(value="/{departmentId}", method=RequestMethod.PUT)
 	public HttpEntity<Department> update(@PathVariable Short departmentId, @Valid @RequestBody Department department, BindingResult bindingResult) {
@@ -55,6 +55,10 @@ public class DepartmentController {
 		if(!departmentService.isRegisteredDepartment(departmentId)) {
 			return new ResponseEntity<Department>(HttpStatus.NOT_FOUND);
 		}
+		if(bindingResult.hasErrors()) {
+			return new ResponseEntity<Department>(HttpStatus.BAD_REQUEST);
+		}
+		departmentService.updateDepartment(departmentId, department);
 		return new ResponseEntity<Department>(HttpStatus.OK);
 	}
 	@RequestMapping(value="/{departmentId}", method=RequestMethod.DELETE)
@@ -63,6 +67,7 @@ public class DepartmentController {
 		if(!departmentService.isRegisteredDepartment(departmentId)) {
 			return new ResponseEntity<Department>(HttpStatus.NOT_FOUND);
 		}
+		departmentService.deleteDepartment(departmentId);
 		return new ResponseEntity<Department>(HttpStatus.OK);
 	}
 }
