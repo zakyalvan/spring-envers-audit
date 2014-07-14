@@ -17,6 +17,8 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.data.repository.history.support.RevisionEntityInformation;
 
+import com.innovez.core.audit.entity.RevisionInfoEntity;
+
 /**
  * Factory bean for revision aware jpa repository implementation.
  * 
@@ -47,9 +49,8 @@ public class RevisionAwareJpaRepositoryFactoryBean extends JpaRepositoryFactoryB
 
 		public RevisionAwareJpaRepositoryFactory(EntityManager entityManager, Class<?> revisionEntityClass) {
 			super(entityManager);
-			revisionEntityClass = revisionEntityClass == null ? DefaultRevisionEntity.class : revisionEntityClass;
-			this.revisionEntityInformation = DefaultRevisionEntity.class.equals(revisionEntityClass) ? new DefaultRevisionEntityInformation()
-					: new ReflectionRevisionEntityInformation(revisionEntityClass);
+			revisionEntityClass = revisionEntityClass == null ? RevisionInfoEntity.class : revisionEntityClass;
+			this.revisionEntityInformation = RevisionInfoEntity.class.equals(revisionEntityClass) ? new DefaultRevisionEntityInformation() : new ReflectionRevisionEntityInformation(revisionEntityClass);
 		}
 		
 		@Override

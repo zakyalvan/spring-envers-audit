@@ -7,7 +7,7 @@ import org.springframework.util.Assert;
 import com.innovez.core.audit.entity.RevisionInfoEntity;
 
 /**
- * Default implementation of revisio-metadata type.
+ * Default implementation of class which hold meta information of revision.
  * 
  * @author zakyalvan
  */
@@ -15,12 +15,12 @@ public class DefaultRevisionMetadata implements RevisionMetadata<Long> {
 	private final RevisionInfoEntity revisionInfoEntity;
 
 	public DefaultRevisionMetadata(RevisionInfoEntity revisionInfoEntity) {
-		Assert.notNull(revisionInfoEntity);
+		Assert.notNull(revisionInfoEntity, "Revision info entity should not be null");
 		this.revisionInfoEntity = revisionInfoEntity;
 	}
 
 	public Long getRevisionNumber() {
-		return revisionInfoEntity.getNumber();
+		return revisionInfoEntity.getRevision();
 	}
 
 	public DateTime getRevisionDate() {
