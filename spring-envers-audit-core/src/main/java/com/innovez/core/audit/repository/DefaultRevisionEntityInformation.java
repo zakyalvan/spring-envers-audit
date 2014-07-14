@@ -1,11 +1,12 @@
 package com.innovez.core.audit.repository;
 
-import org.hibernate.envers.DefaultRevisionEntity;
 import org.springframework.data.repository.history.support.RevisionEntityInformation;
+
+import com.innovez.core.audit.entity.RevisionInfoEntity;
 
 class DefaultRevisionEntityInformation implements RevisionEntityInformation {
 	public Class<?> getRevisionNumberType() {
-		return Integer.class;
+		return Long.class;
 	}
 
 	public boolean isDefaultRevisionEntity() {
@@ -13,6 +14,6 @@ class DefaultRevisionEntityInformation implements RevisionEntityInformation {
 	}
 
 	public Class<?> getRevisionEntityClass() {
-		return DefaultRevisionEntity.class;
+		return RevisionInfoEntity.class;
 	}
 }

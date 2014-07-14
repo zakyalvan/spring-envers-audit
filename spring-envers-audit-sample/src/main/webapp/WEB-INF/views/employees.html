@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html data-ng-app="employeeApp">
+	<head>
+		<title>Employee</title>
+		
+		<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap-theme.min.css">
+	</head>
+	<body data-ng-controller="defaultCtrl">
+		<div class="container">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<button class="btn btn-primary btn-sm" data-ng-click="loadData()">Load Data</button>
+					<div class="table-responsive">
+						<table class="table table-hover table-striped">
+							<thead>
+								<tr>
+									<th>First Name</th>
+									<th>Middle Name</th>
+									<th>Last Name</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-ng-hide="data.content.length">
+									<td colspan="3" class="text-center">No data to display</td>
+								</tr>
+								<tr data-ng-repeat="employee in data.content">
+									<td>{{employee.firstName}}</td>
+									<td>{{employee.middleName}}</td>
+									<td>{{employee.lastName}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/assets/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/assets/js/angular.min.js"></script>
+		<script type="text/javascript">
+			angular.module("employeeApp", [])
+				.controller("defaultCtrl", function($scope, $http) {
+					$scope.data = {};
+					$scope.loadData = function() {
+						$http.get("/api/employees").success(function(data) {
+							$scope.data = data;
+						});
+					}
+				});
+		</script>
+	</body>
+</html>

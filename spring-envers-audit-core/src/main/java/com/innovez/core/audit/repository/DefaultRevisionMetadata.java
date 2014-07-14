@@ -1,29 +1,34 @@
 package com.innovez.core.audit.repository;
 
-import org.hibernate.envers.DefaultRevisionEntity;
 import org.joda.time.DateTime;
 import org.springframework.data.history.RevisionMetadata;
 import org.springframework.util.Assert;
 
-public class DefaultRevisionMetadata implements RevisionMetadata<Integer> {
-	private final DefaultRevisionEntity entity;
+import com.innovez.core.audit.entity.RevisionInfoEntity;
 
-	public DefaultRevisionMetadata(DefaultRevisionEntity entity) {
+/**
+ * Default implementation of revisio-metadata type.
+ * 
+ * @author zakyalvan
+ */
+public class DefaultRevisionMetadata implements RevisionMetadata<Long> {
+	private final RevisionInfoEntity revisionInfoEntity;
 
-		Assert.notNull(entity);
-		this.entity = entity;
+	public DefaultRevisionMetadata(RevisionInfoEntity revisionInfoEntity) {
+		Assert.notNull(revisionInfoEntity);
+		this.revisionInfoEntity = revisionInfoEntity;
 	}
 
-	public Integer getRevisionNumber() {
-		return entity.getId();
+	public Long getRevisionNumber() {
+		return revisionInfoEntity.getNumber();
 	}
 
 	public DateTime getRevisionDate() {
-		return new DateTime(entity.getTimestamp());
+		return new DateTime(revisionInfoEntity.getTimestamp());
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T getDelegate() {
-		return (T) entity;
+		return (T) revisionInfoEntity;
 	}
 }

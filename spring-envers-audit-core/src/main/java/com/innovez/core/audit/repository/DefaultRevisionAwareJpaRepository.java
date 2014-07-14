@@ -30,6 +30,17 @@ import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.data.repository.history.support.RevisionEntityInformation;
 import org.springframework.util.Assert;
 
+import com.innovez.core.audit.entity.RevisionInfoEntity;
+
+/**
+ * Default implementation of {@link RevisionAwareJpaRepository}.
+ * 
+ * @author zakyalvan
+ *
+ * @param <T>
+ * @param <ID>
+ * @param <N>
+ */
 public class DefaultRevisionAwareJpaRepository<T, ID extends Serializable, N extends Number & Comparable<N>> extends SimpleJpaRepository<T, ID> implements RevisionRepository<T, ID, N> {
 	private final EntityInformation<T, ?> entityInformation;
 	private final RevisionEntityInformation revisionEntityInformation;
@@ -69,19 +80,16 @@ public class DefaultRevisionAwareJpaRepository<T, ID extends Serializable, N ext
 	@Override
 	@SuppressWarnings("unchecked")
 	public Revisions<N, T> findRevisions(ID id) {
-
 		Class<T> type = entityInformation.getJavaType();
 		AuditReader reader = AuditReaderFactory.get(entityManager);
 		List<? extends Number> revisionNumbers = reader.getRevisions(type, id);
 
-		return revisionNumbers.isEmpty() ? new Revisions<N, T>(Collections.EMPTY_LIST) : getEntitiesForRevisions(
-				(List<N>) revisionNumbers, id, reader);
+		return revisionNumbers.isEmpty() ? new Revisions<N, T>(Collections.EMPTY_LIST) : getEntitiesForRevisions((List<N>) revisionNumbers, id, reader);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Page<Revision<N, T>> findRevisions(ID id, Pageable pageable) {
-
 		Class<T> type = entityInformation.getJavaType();
 		AuditReader reader = AuditReaderFactory.get(entityManager);
 		List<Number> revisionNumbers = reader.getRevisions(type, id);
@@ -101,7 +109,6 @@ public class DefaultRevisionAwareJpaRepository<T, ID extends Serializable, N ext
 
 	@SuppressWarnings("unchecked")
 	private Revisions<N, T> getEntitiesForRevisions(List<N> revisionNumbers, ID id, AuditReader reader) {
-
 		Class<T> type = entityInformation.getJavaType();
 		Map<N, T> revisions = new HashMap<N, T>(revisionNumbers.size());
 
@@ -119,9 +126,7 @@ public class DefaultRevisionAwareJpaRepository<T, ID extends Serializable, N ext
 	@SuppressWarnings("unchecked")
 	private List<Revision<N, T>> toRevisions(Map<N, T> source, Map<Number, Object> revisionEntities) {
 		List<Revision<N, T>> result = new ArrayList<Revision<N, T>>();
-
 		for (Entry<N, T> revision : source.entrySet()) {
-
 			N revisionNumber = revision.getKey();
 			T entity = revision.getValue();
 			RevisionMetadata<N> metadata = (RevisionMetadata<N>) getRevisionMetadata(revisionEntities.get(revisionNumber));
@@ -134,7 +139,7 @@ public class DefaultRevisionAwareJpaRepository<T, ID extends Serializable, N ext
 
 	private RevisionMetadata<?> getRevisionMetadata(Object object) {
 		if (object instanceof DefaultRevisionEntity) {
-			return new DefaultRevisionMetadata((DefaultRevisionEntity) object);
+			return new DefaultRevisionMetadata((RevisionInfoEntity) object);
 		} else {
 			return new AnnotationRevisionMetadata<N>(object, RevisionNumber.class, RevisionTimestamp.class);
 		}

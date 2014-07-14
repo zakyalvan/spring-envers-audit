@@ -1,12 +1,12 @@
 package com.innovez.sample.web.controller;
 
-import java.util.Collection;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import com.innovez.sample.domain.entity.Employee;
 import com.innovez.sample.domain.service.EmployeeService;
 
 @Controller
-@RequestMapping(value="/employees**")
+@RequestMapping(value="/api/employees**")
 public class EmployeeController {
 	private Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 	
@@ -29,9 +29,9 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	
 	@RequestMapping(value={"", "/"}, method=RequestMethod.GET)
-	public HttpEntity<Collection<Employee>> list() {
+	public HttpEntity<Page<Employee>> list(Pageable pageable) {
 		logger.debug("Show list of all registered employees");
-		return new ResponseEntity<Collection<Employee>>(employeeService.getAllEmployees(), HttpStatus.OK);
+		return new ResponseEntity<Page<Employee>>(employeeService.getEmployees(pageable), HttpStatus.OK);
 	}
 	@RequestMapping(value="/{employeeId}", method=RequestMethod.GET)
 	public HttpEntity<Employee> details(@PathVariable Integer employeeId) {

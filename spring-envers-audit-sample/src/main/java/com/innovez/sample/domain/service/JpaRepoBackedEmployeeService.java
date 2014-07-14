@@ -3,6 +3,8 @@ package com.innovez.sample.domain.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +32,14 @@ public class JpaRepoBackedEmployeeService implements EmployeeService {
 	}
 
 	@Override
-	public Collection<Employee> getAllEmployees() {
+	public Collection<Employee> getEmployees() {
 		return employeeRepository.findAll();
+	}
+	
+	@Override
+	public Page<Employee> getEmployees(Pageable pageable) {
+		Assert.notNull(pageable);
+		return employeeRepository.findAll(pageable);
 	}
 
 	@Override

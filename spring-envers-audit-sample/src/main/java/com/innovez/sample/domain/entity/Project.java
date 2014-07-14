@@ -3,6 +3,8 @@ package com.innovez.sample.domain.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -37,6 +39,10 @@ public class Project implements Serializable {
 
 	@NotNull
 	@Embedded
+	@AttributeOverrides(value={
+		@AttributeOverride(name="currency", column=@Column(name="budget_currency")),
+		@AttributeOverride(name="amount", column=@Column(name="budget_amount"))
+	})
 	private Money budget;
 	
 	@NotNull

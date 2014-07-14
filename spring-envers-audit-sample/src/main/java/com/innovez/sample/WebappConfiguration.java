@@ -20,6 +20,7 @@ public class WebappConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("/WEB-INF/templates/index.html");
+		registry.addViewController("/employee").setViewName("/WEB-INF/views/employees.html");
 	}
 
 	@Override
